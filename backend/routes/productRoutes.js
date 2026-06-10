@@ -1,5 +1,6 @@
 import express from "express";
 import { validateObjectId } from "../middleware/errorMiddleware.js";
+import upload from "../middleware/uploadMiddleware.js";
 
 import {
   getProducts,
@@ -23,6 +24,7 @@ router.post(
   "/",
   authMiddleware,
   adminMiddleware,
+  upload.single("image"),
   createProduct
 );
 
@@ -33,6 +35,7 @@ router.put(
   authMiddleware,
   adminMiddleware,
   validateObjectId,
+  upload.single("image"),
   updateProduct
 );
 

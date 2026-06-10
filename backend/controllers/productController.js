@@ -55,17 +55,22 @@ export const createProduct = async (req, res) => {
 
     const { name, price, category } = req.body;
 
+    // Cloudinary Image URL
+    const image = req.file?.path;
+
     // Validation
-    if (!name || !price || !category) {
+    if (!name || !price || !category || !image) {
       return res.status(400).json({
         message: "Please fill all fields",
       });
     }
 
+    // Create Product
     const product = await Product.create({
       name,
       price,
       category,
+      image,
     });
 
     res.status(201).json({
@@ -91,6 +96,10 @@ export const updateProduct = async (req, res) => {
 
     const { name, price, category } = req.body;
 
+    // Optional Image Update
+    const image = req.file?.path;
+
+    // Find Product
     const product = await Product.findById(id);
 
     // Product not found
@@ -100,10 +109,17 @@ export const updateProduct = async (req, res) => {
       });
     }
 
+    // Update Fields
     product.name = name || product.name;
     product.price = price || product.price;
     product.category = category || product.category;
 
+    // Update image only if new image uploaded
+    if (image) {
+      product.image = image;
+    }
+
+    // Save Updated Product
     const updatedProduct = await product.save();
 
     res.status(200).json({

@@ -18,10 +18,14 @@ const productSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    image: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Product = mongoose.model("Product", productSchema);
