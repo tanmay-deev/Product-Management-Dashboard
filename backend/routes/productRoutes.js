@@ -1,4 +1,5 @@
 import express from "express";
+import { validateObjectId } from "../middleware/errorMiddleware.js";
 
 import {
   getProducts,
@@ -31,6 +32,7 @@ router.put(
   "/:id",
   authMiddleware,
   adminMiddleware,
+  validateObjectId,
   updateProduct
 );
 
@@ -40,6 +42,7 @@ router.delete(
   "/:id",
   authMiddleware,
   adminMiddleware,
+  validateObjectId,
   deleteProduct
 );
 

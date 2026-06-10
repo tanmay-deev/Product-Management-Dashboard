@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import testRoutes from "./routes/testRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import { errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
 
@@ -20,6 +21,9 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/test", testRoutes);
 app.use("/api/products", productRoutes);
+
+// Global Error Handler
+app.use(errorHandler);
 
 // Test Route
 app.get("/", (req, res) => {

@@ -5,9 +5,39 @@ import Product from "../models/Product.js";
 export const getProducts = async (req, res) => {
   try {
 
-    const products = await Product.find().sort({ createdAt: -1 });
+    // Search Query
+    const search = req.query.search || "";
 
-    res.status(200).json(products);
+    // Pagination
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 5;
+
+    // Skip Calculation
+    const skip = (page - 1) * limit;
+
+    // Search Filter
+    const searchFilter = {
+      $or: [
+        { name: { $regex: search, $options: "i" } },
+        { category: { $regex: search, $options: "i" } },
+      ],
+    };
+
+    // Get Products
+    const products = await Product.find(searchFilter)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    // Total Products Count
+    const totalProducts = await Product.countDocuments(searchFilter);
+
+    res.status(200).json({
+      products,
+      currentPage: page,
+      totalPages: Math.ceil(totalProducts / limit),
+      totalProducts,
+    });
 
   } catch (error) {
     console.log(error);
