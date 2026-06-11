@@ -4,6 +4,7 @@ import upload from "../middleware/uploadMiddleware.js";
 
 import {
   getProducts,
+  getProductById,
   createProduct,
   updateProduct,
   deleteProduct,
@@ -17,6 +18,14 @@ const router = express.Router();
 
 // GET PRODUCTS
 router.get("/", authMiddleware, getProducts);
+
+// GET SINGLE PRODUCT
+router.get(
+  "/:id",
+  authMiddleware,
+  validateObjectId,
+  getProductById
+);
 
 
 // CREATE PRODUCT

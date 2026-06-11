@@ -23,6 +23,8 @@ export const getProducts = async (req, res) => {
       ],
     };
 
+    
+
     // Get Products
     const products = await Product.find(searchFilter)
       .sort({ createdAt: -1 })
@@ -40,6 +42,34 @@ export const getProducts = async (req, res) => {
     });
 
   } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      message: "Server Error",
+    });
+  }
+};
+
+// GET SINGLE PRODUCT
+export const getProductById = async (req, res) => {
+  try {
+
+    const { id } = req.params;
+
+    // Find Product
+    const product = await Product.findById(id);
+
+    // Product not found
+    if (!product) {
+      return res.status(404).json({
+        message: "Product not found",
+      });
+    }
+
+    res.status(200).json(product);
+
+  } catch (error) {
+
     console.log(error);
 
     res.status(500).json({
