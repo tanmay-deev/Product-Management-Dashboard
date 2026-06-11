@@ -3,6 +3,7 @@ import DashboardLayout from "../../components/layout/DashboardLayout";
 import ProductCard from "../../components/products/ProductCard";
 import API from "../../api/axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 function Products() {
 
@@ -13,6 +14,7 @@ function Products() {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     useEffect(() => {
 
@@ -63,12 +65,16 @@ function Products() {
                         Products
                     </h1>
 
-                    <button
-                        onClick={() => navigate("/products/add")}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl transition-all duration-200"
-                    >
-                        Add Product
-                    </button>
+                    {user?.role === "admin" && (
+
+                        <button
+                            onClick={() => navigate("/products/add")}
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl transition-all duration-200"
+                        >
+                            Add Product
+                        </button>
+
+                    )}
 
                 </div>
 
@@ -119,7 +125,7 @@ function Products() {
                 {/* Products Grid */}
                 {!loading && products.length > 0 && (
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
                         {products.map((product) => (
                             <ProductCard

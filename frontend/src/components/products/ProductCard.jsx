@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 import toast from "react-hot-toast";
+import { useAuth } from "../../context/AuthContext";
 
 function ProductCard({ product, onDelete }) {
 
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     const handleDelete = async () => {
 
@@ -36,7 +38,7 @@ function ProductCard({ product, onDelete }) {
             <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-52 object-cover"
+                className="w-full h-48 sm:h-52 object-cover"
             />
 
             <div className="p-5">
@@ -57,27 +59,31 @@ function ProductCard({ product, onDelete }) {
 
                 </div>
 
-                <div className="flex gap-3">
+                {user?.role === "admin" && (
 
-                    {/* Edit Button */}
-                    <button
-                        onClick={() =>
-                            navigate(`/products/edit/${product._id}`)
-                        }
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-xl transition-all duration-200"
-                    >
-                        Edit
-                    </button>
+                    <div className="flex gap-3">
 
-                    {/* Delete Button */}
-                    <button
-                        onClick={handleDelete}
-                        className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-xl transition-all duration-200"
-                    >
-                        Delete
-                    </button>
+                        {/* Edit Button */}
+                        <button
+                            onClick={() =>
+                                navigate(`/products/edit/${product._id}`)
+                            }
+                            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-xl transition-all duration-200"
+                        >
+                            Edit
+                        </button>
 
-                </div>
+                        {/* Delete Button */}
+                        <button
+                            onClick={handleDelete}
+                            className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-xl transition-all duration-200"
+                        >
+                            Delete
+                        </button>
+
+                    </div>
+
+                )}
 
             </div>
         </div>
