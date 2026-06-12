@@ -2,6 +2,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 import { HiMenu } from "react-icons/hi";
+import ThemeToggle from "../ui/ThemeToggle";
 
 function Navbar({ setSidebarOpen }) {
 
